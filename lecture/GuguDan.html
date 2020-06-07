@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            class GuguDan extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                        first: Math.ceil(Math.random() * 9),
+                        second: Math.ceil(Math.random() * 9),
+                        old_answer: '',
+                        answer: '',
+                        result: '',
+                    };
+                }
+
+                onSubmit = (e) => {
+                    e.preventDefault();
+
+                    console.log(
+                        this.state.answer,
+                        this.state.first * this.state.second
+                    );
+
+                    if (
+                        parseInt(this.state.answer) ===
+                        this.state.first * this.state.second
+                    ) {
+                        this.setState({
+                            first: Math.ceil(Math.random() * 9),
+                            second: Math.ceil(Math.random() * 9),
+                            answer: '',
+                            old_answer: this.state.answer,
+                            result: '정답',
+                        });
+                    } else {
+                        this.setState({
+                            answer: '',
+                            old_answer: this.state.answer,
+                            result: '땡',
+                        });
+                    }
+                };
+
+                onChange = (e) => {
+                    this.setState({
+                        answer: e.target.value,
+                    });
+                };
+
+                render() {
+                    return (
+                        <div>
+                            <form onSubmit={this.onSubmit}>
+                                {this.state.first} 곱하기 {this.state.second}
+                                는? <br />
+                                <input
+                                    type='number'
+                                    value={this.state.answer}
+                                    onChange={this.onChange}
+                                />
+                                <button>확인</button>
+                                <br />
+                                {this.state.old_answer} {this.state.result}
+                            </form>
+                        </div>
+                    );
+                }
+            }
+        </script>
+        <script type="text/babel">
+            ReactDOM.render(<GuguDan />, document.querySelector('#root'));
+        </script>
+    </body>
+</html>
