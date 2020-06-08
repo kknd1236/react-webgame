@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            const GuguDan = () => {
+                const [first, setFirst] = React.useState(
+                    Math.ceil(Math.random() * 9)
+                );
+                const [second, setSecond] = React.useState(
+                    Math.ceil(Math.random() * 9)
+                );
+                const [value, setValue] = React.useState('');
+                const [result, setResult] = React.useState('');
+
+                const inputRef = React.useRef(null);
+
+                const onSubmit = (e) => {
+                    e.preventDefault();
+                    if (parseInt(value) === first * second) {
+                        setFirst(Math.ceil(Math.random() * 9));
+                        setSecond(Math.ceil(Math.random() * 9));
+                        setValue('');
+
+                        //setResult('정답 : ' + value);
+                        //이전값 가지고 오기
+                        setResult((preResult) => {
+                            return '정답 : ' + value;
+                        });
+                        inputRef.current.focus();
+                    } else {
+                        setValue(value);
+                        //setResult('땡 : ' + value);
+                        setResult((preResult) => {
+                            return '땡 : ' + value;
+                        });
+                        inputRef.current.focus();
+                    }
+                };
+                const onChange = (e) => {
+                    setValue(e.target.value);
+                };
+
+                console.log('랜더링');
+                return (
+                    <React.Fragment>
+                        <form onSubmit={onSubmit}>
+                            {first} 곱하기 {second}
+                            는? <br />
+                            <input
+                                type='number'
+                                value={value}
+                                onChange={onChange}
+                                ref={inputRef}
+                            />
+                            <button>확인</button>
+                            <br />
+                            {result}
+                        </form>
+                    </React.Fragment>
+                );
+            };
+        </script>
+        <script type="text/babel">
+            ReactDOM.render(<GuguDan />, document.querySelector('#root'));
+        </script>
+    </body>
+</html>
