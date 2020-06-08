@@ -17,8 +17,7 @@
                     this.state = {
                         first: Math.ceil(Math.random() * 9),
                         second: Math.ceil(Math.random() * 9),
-                        old_answer: '',
-                        answer: '',
+                        value: '',
                         result: '',
                     };
                 }
@@ -26,53 +25,60 @@
                 onSubmit = (e) => {
                     e.preventDefault();
 
-                    console.log(
-                        this.state.answer,
-                        this.state.first * this.state.second
-                    );
-
                     if (
-                        parseInt(this.state.answer) ===
+                        parseInt(this.state.value) ===
                         this.state.first * this.state.second
                     ) {
-                        this.setState({
-                            first: Math.ceil(Math.random() * 9),
-                            second: Math.ceil(Math.random() * 9),
-                            answer: '',
-                            old_answer: this.state.answer,
-                            result: '정답',
+                        this.setState((prevState) => {
+                            return {
+                                first: Math.ceil(Math.random() * 9),
+                                second: Math.ceil(Math.random() * 9),
+                                value: '',
+                                result: '정답 : ' + prevState.value,
+                            };
                         });
+                        this.input.focus();
                     } else {
-                        this.setState({
-                            answer: '',
-                            old_answer: this.state.answer,
-                            result: '땡',
+                        this.setState((prevState) => {
+                            return {
+                                value: 'this.state.value',
+                                result: '땡 : ' + prevState.value,
+                            };
                         });
+                        this.input.focus();
                     }
                 };
 
                 onChange = (e) => {
                     this.setState({
-                        answer: e.target.value,
+                        value: e.target.value,
                     });
                 };
 
+                //포커스 주기
+                input;
+                onRefInput = (c) => {
+                    this.input = c;
+                };
+
                 render() {
+                    console.log('랜더링');
                     return (
-                        <div>
+                        <React.Fragment>
                             <form onSubmit={this.onSubmit}>
                                 {this.state.first} 곱하기 {this.state.second}
                                 는? <br />
                                 <input
                                     type='number'
-                                    value={this.state.answer}
+                                    value={this.state.value}
                                     onChange={this.onChange}
+                                    ref={this.onRefInput}
                                 />
                                 <button>확인</button>
                                 <br />
-                                {this.state.old_answer} {this.state.result}
+                                {this.state.result}
                             </form>
-                        </div>
+                        </React.Fragment>
                     );
                 }
             }
